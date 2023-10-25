@@ -1,19 +1,24 @@
-const user = require('../models/userModel')
+const userModel = require('../models/userModel')
 
 module.exports = {
-    index: (req, res) => {
-        if(users.length > 0){
-            res.json({
-                status: true,
-                data: users,
-                method: req.method,
-                url: req.url,
-            })
-        }else{
-            res.json({
-                status: false,
-                message: "Data tidak ditemukan"
-            })
+    index: async (req, res) => {
+        try{
+            const users = await userModel.find()
+            if(users.length > 0){
+                res.status(200).json({
+                    status: true,
+                    data: users,
+                    method: req.method,
+                    url: req.url,
+                })
+            }else{
+                res.json({
+                    status: false,
+                    message: "Data tidak ditemukan"
+                })
+            }
+        }catch(error){
+            res.status(400).json({success: false})
         }
     },
     store: (req, res) => {
