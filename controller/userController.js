@@ -35,22 +35,22 @@ module.exports = {
             res.status(400).json({success: false})
         }
     },
-    update: (req, res) => {
-        const id = req.params.id
-        users.filter(user => {
-            if(user.id == id){
-                user.nama = req.body.nama
-                user.email = req.body.email
-                return user
-            }
-        })
-        res.json({
-            status: true,
-            data: users,
-            method: req.method,
-            url: req.url,
-            message: "Data berhasil diedit"
-        })
+    update: async (req, res) => {
+        try{
+            const users = await userModel.findByIdAndUpdate(req.params.id, req.body, {
+                new: true,
+                runValidators: true
+            })
+            res.json({
+                status: true,
+                data: users,
+                method: req.method,
+                url: req.url,
+                message: "Data berhasil diedit"
+            })
+        }catch(error){
+            res.status(400).json({success: false})
+        }
     },
     destroy: (req, res) => {
         const id = req.params.id
