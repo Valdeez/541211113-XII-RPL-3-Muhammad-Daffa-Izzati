@@ -52,15 +52,17 @@ module.exports = {
             res.status(400).json({success: false})
         }
     },
-    destroy: (req, res) => {
-        const id = req.params.id
-        users = users.filter(user => user.id != id)
-        res.json({
-            status: true,
-            data: users,
-            method: req.method,
-            url: req.url,
-            message: "Data berhasil dihapus"
-        })
+    destroy: async (req, res) => {
+        try{
+            await userModel.findByIdAndDelete(req.params.id)
+            res.json({
+                status: true,
+                method: req.method,
+                url: req.url,
+                message: "Data berhasil dihapus"
+            })
+        }catch(error){
+            res.status(400).json({success: false})
+        }
     }
 }
