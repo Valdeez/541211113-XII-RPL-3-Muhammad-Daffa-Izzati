@@ -21,6 +21,19 @@ module.exports = {
             res.status(400).json({success: false})
         }
     },
+    search: async (req, res) => {
+        try{
+            const users = await userModel.findById(req.params.id)
+            res.status(200).json({
+                status: true,
+                data: users,
+                method: req.method,
+                url: req.url,
+            })
+        }catch(error){
+            res.status(400).json({success: false})
+        }
+    },
     store: async (req, res) => {
         try{
             const users = await userModel.create(req.body)
